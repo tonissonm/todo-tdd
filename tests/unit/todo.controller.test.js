@@ -14,22 +14,22 @@ describe('TodoController.createTodo',()=>{
     beforeEach(()=>{
         req.body = newTodo
     })
-    it('should have a createTodo function',()=>{
+    it('should have a createTodo function', ()=>{
         expect(typeof TodoController.createTodo).toBe('function')
     })
-    it('should call TodoModel.create',()=>{
+    it('should call TodoModel.create', ()=>{
         req.body = newTodo
-        TodoController.createTodo()
-        expect(TodoModel.create).toBeCalled(newTodo)
-    })
-    it('should return a 201 response code',()=>{
         TodoController.createTodo(req,res,next)
+        expect(TodoModel.create).toHaveBeenCalledWith(newTodo)
+    })
+    it('should return a 201 response code',async ()=>{
+        await TodoController.createTodo(req,res,next)
         expect(res.statusCode).toBe(201)
         expect(res._isEndCalled()).toBeTruthy()
     })
-    it('should return a JSON body in Response',()=>{
-        TodoModel.create.mockReturnValue(newTodo)
-        TodoController.createTodo(req,res,next)
+    it('should return a JSON body in Response', async ()=>{
+        await TodoModel.create.mockReturnValue(newTodo)
+        await TodoController.createTodo(req,res,next)
         expect(res._getJSONData()).toStrictEqual(newTodo)
     })
 })
