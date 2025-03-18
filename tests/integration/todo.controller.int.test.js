@@ -53,12 +53,24 @@ describe(endpointUrl,()=>{
         expect(res.statusCode).toBe(200);
         expect(res.body.title).toBe(testData.title);
         expect(res.body.done).toBe(testData.done);
-    })
+    });
     it("should return 404 on PUT" + endpointUrl, async () =>{
         const res = await request(app)
         .put(endpointUrl+notExistingTodoId)
         .send(testData);
         expect(res.statusCode).toBe(404);
+    });
+    it("DELETE " +endpointUrl,async()=>{
+        const response = await request(app)
+        .delete(endpointUrl + newTodoId);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.messeage).toBe("Todo is deleted successfully");
+
+    });
+    it("should return a 404 on DELETE, when the Todo does not exist",async()=>{
+        const response = await request(app)
+        .delete(endpointUrl+notExistingTodoId);
+        expect(response.statusCode).toBe(404);
     })
 
 });
